@@ -4,6 +4,7 @@ export const projects = [
     title: 'Metal Stanchion Mount',
     category: 'Mechanical Drafting',
     discipline: 'mechanical',
+    image: '/projects/stanchion.png',
     summary:
       'A precision mechanical component drawing for a structural steel stanchion mount, using chamfer and fillet commands to define safe edge geometry.',
     detail:
@@ -16,6 +17,7 @@ export const projects = [
     title: 'Kitchen Unit Plan',
     category: 'Architectural Planning',
     discipline: 'architectural',
+    image: '/projects/kitchen.png',
     summary:
       'A fully layered residential kitchen unit plan, drawn to scale with appliance clearances, worktop runs, and ergonomic traffic zones.',
     detail:
@@ -28,6 +30,7 @@ export const projects = [
     title: 'Converge Drawing',
     category: 'Architectural Planning',
     discipline: 'architectural',
+    image: '/projects/converge.png',
     summary:
       'A convergence layout showing how multiple structural and architectural elements meet at a single junction point.',
     detail:
@@ -40,6 +43,7 @@ export const projects = [
     title: '2D Site Plan',
     category: 'Civil Infrastructure',
     discipline: 'civil',
+    image: '/projects/siteplan.png',
     summary:
       'A complete 2D site plan covering plot boundaries, access routes, drainage runs, and building footprints for a residential development.',
     detail:

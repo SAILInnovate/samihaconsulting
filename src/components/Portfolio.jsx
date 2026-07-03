@@ -58,7 +58,7 @@ export default function Portfolio() {
                   className="bg-white shadow-soft rounded-2xl group relative overflow-hidden p-3 text-left transition-transform hover:-translate-y-1"
                 >
                   <div className="relative overflow-hidden rounded-2xl h-48 bg-charcoal/5">
-                    <img src="https://images.unsplash.com/photo-1664575602554-2087b04935a5?auto=format&fit=crop&q=80" alt={p.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <img src={p.image} alt={p.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent opacity-80" />
                   </div>
 
@@ -121,7 +121,7 @@ export default function Portfolio() {
 
               <div className="p-4">
                 <div className="w-full h-64 rounded-2xl overflow-hidden">
-                   <img src="https://images.unsplash.com/photo-1664575602554-2087b04935a5?auto=format&fit=crop&q=80" alt={active.title} className="w-full h-full object-cover" />
+                   <img src={active.image} alt={active.title} className="w-full h-full object-cover" />
                 </div>
               </div>
 
