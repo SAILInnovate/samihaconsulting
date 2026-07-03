@@ -70,7 +70,8 @@
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-medium text-navy transition-all duration-300;
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-medium transition-all duration-300;
+    color: #1F3A5F; /* text-navy */
     border: 1px solid rgba(31, 58, 95, 0.2);
     background: transparent;
   }
@@ -80,7 +81,10 @@
   }
 
   .section-label {
-    @apply inline-flex items-center gap-2 rounded-full border border-sage/40 bg-sage/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-navy;
+    @apply inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em];
+    border-color: rgba(168, 195, 160, 0.4); /* border-sage/40 */
+    background-color: rgba(168, 195, 160, 0.1); /* bg-sage/10 */
+    color: #1F3A5F; /* text-navy */
   }
 
   .hairline {
