@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #F5F1E6; /* beige */
+    color: #3B3B3B; /* charcoal */
+    @apply font-sans antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: rgba(168, 195, 160, 0.4);
+    color: #1F3A5F;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #F5F1E6;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #A8C3A0;
+    border-radius: 999px;
+    border: 2px solid #F5F1E6;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #8EAA85;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white rounded-2xl shadow-card;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .glass-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  }
+
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 font-semibold tracking-wide text-white transition-all duration-300;
+    background-color: #1F3A5F;
+    box-shadow: 0 4px 14px rgba(31, 58, 95, 0.2);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    background-color: #152943;
+    box-shadow: 0 6px 20px rgba(31, 58, 95, 0.3);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-medium text-navy transition-all duration-300;
+    border: 1px solid rgba(31, 58, 95, 0.2);
+    background: transparent;
+  }
+  .btn-ghost:hover {
+    border-color: rgba(31, 58, 95, 0.5);
+    background: rgba(31, 58, 95, 0.05);
+  }
+
+  .section-label {
+    @apply inline-flex items-center gap-2 rounded-full border border-sage/40 bg-sage/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-navy;
+  }
+
+  .hairline {
+    background: rgba(0, 0, 0, 0.08);
+    height: 1px;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
