@@ -1,133 +1,121 @@
-import { motion } from 'framer-motion'
+import { useRef } from 'react'
+import { gsap } from 'gsap'
+import { useGSAP } from '@gsap/react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  show: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] },
-  }),
-}
+gsap.registerPlugin(ScrollTrigger)
 
 export default function Hero() {
+  const container = useRef(null)
+  const imageRef = useRef(null)
+  const textRefs = useRef([])
+
+  const addToRefs = (el) => {
+    if (el && !textRefs.current.includes(el)) {
+      textRefs.current.push(el)
+    }
+  }
+
+  useGSAP(() => {
+    gsap.fromTo(
+      textRefs.current,
+      { y: 60, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.2, stagger: 0.1, ease: 'power3.out', delay: 0.1 }
+    )
+
+    gsap.fromTo(
+      imageRef.current,
+      { scale: 1.15, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 1.5, ease: 'power3.out', delay: 0.3 }
+    )
+  }, { scope: container })
+
   return (
-    <section id="top" className="relative pt-32 pb-20 sm:pt-40 sm:pb-28">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
+    <section id="top" ref={container} className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 bg-grid-pattern animate-pan-grid">
+      <div className="absolute inset-0 bg-white/80" /> {/* Grid fade */}
+      <div className="mx-auto max-w-7xl px-5 sm:px-8 relative z-10">
+        <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
           {/* copy */}
           <div>
-            <motion.div initial="hidden" animate="show" custom={0} variants={fadeUp}>
-              <span className="section-label">
-                <span className="h-1.5 w-1.5 rounded-full bg-navy" />
-                Freelance AutoCAD Drafting · UK
-              </span>
-            </motion.div>
-
-            <motion.h1
-              initial="hidden"
-              animate="show"
-              custom={1}
-              variants={fadeUp}
-              className="mt-6 text-balance text-4xl font-extrabold leading-[1.05] tracking-tight text-navy sm:text-5xl lg:text-6xl"
-            >
-              Your next construction project is going to be{' '}
-              <span className="text-green">a disaster.</span>
-            </motion.h1>
-
-            <motion.p
-              initial="hidden"
-              animate="show"
-              custom={2}
-              variants={fadeUp}
-              className="mt-6 max-w-xl text-balance text-lg leading-relaxed text-charcoal/80"
-            >
-              That is the reality if your team builds from inaccurate plans. Fortunately,
-              meticulous AutoCAD drafting eliminates those hidden errors before a single
-              tool is lifted.
-            </motion.p>
-
-            <motion.p
-              initial="hidden"
-              animate="show"
-              custom={3}
-              variants={fadeUp}
-              className="mt-4 max-w-xl text-base leading-relaxed text-charcoal/70"
-            >
-              I convert messy PDFs, hand sketches and old drawings into precise, fully
-              layered DWG files — so your senior team can stop redrafting and start
-              designing.
-            </motion.p>
-
-            <motion.div
-              initial="hidden"
-              animate="show"
-              custom={4}
-              variants={fadeUp}
-              className="mt-9 flex flex-wrap items-center gap-3"
-            >
-              <a href="#contact" className="btn-primary group">
-                Upload your project file
-                <svg viewBox="0 0 24 24" className="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 12 L19 12 M13 6 L19 12 L13 18" />
-                </svg>
-              </a>
-              <a href="#portfolio" className="btn-ghost">View technical portfolio</a>
-            </motion.div>
-
-            <motion.div
-              initial="hidden"
-              animate="show"
-              custom={5}
-              variants={fadeUp}
-              className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm text-charcoal/60"
-            >
-              {['Layered DWG in 48 hours', '50% deposit · 50% on completion', 'BIM-aware layering'].map((t) => (
-                <span key={t} className="flex items-center gap-2">
-                  <svg viewBox="0 0 24 24" className="h-4 w-4 text-sage" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M5 12 L10 17 L19 7" />
-                  </svg>
-                  {t}
+            <div className="overflow-hidden">
+              <div ref={addToRefs}>
+                <span className="section-label bg-white">
+                  <span className="h-2 w-2 rounded-none bg-green" />
+                  PRECISION DRAFTING // MANCHESTER UK
                 </span>
-              ))}
-            </motion.div>
+              </div>
+            </div>
+
+            <div className="mt-8 overflow-hidden pb-2">
+              <h1 ref={addToRefs} className="text-balance font-sans text-5xl font-extrabold leading-[1.05] tracking-tight text-navy sm:text-6xl lg:text-7xl uppercase">
+                STOP REDRAFTING.<br />
+                <span className="text-navy/70">START DESIGNING.</span>
+              </h1>
+            </div>
+
+            <div className="mt-8 overflow-hidden">
+              <p ref={addToRefs} className="max-w-xl text-balance text-xl leading-relaxed text-charcoal font-medium">
+                I convert messy PDFs, hand sketches, and red-line markups into exact, BS 1192 compliant DWG files.
+              </p>
+            </div>
+
+            <div className="mt-10 overflow-hidden">
+              <div ref={addToRefs} className="flex flex-col sm:flex-row items-center gap-4">
+                <a href="#contact" className="btn-primary group w-full sm:w-auto">
+                  Upload project file
+                  <svg viewBox="0 0 24 24" className="h-5 w-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12 L19 12 M13 6 L19 12 L13 18" />
+                  </svg>
+                </a>
+                <a href="#pricing" className="btn-ghost w-full sm:w-auto">View pricing</a>
+              </div>
+            </div>
+
+            <div className="mt-12 overflow-hidden">
+              <div ref={addToRefs} className="flex flex-wrap gap-x-6 gap-y-3 font-mono text-[11px] tracking-widest text-charcoal/70 uppercase font-bold">
+                {['Layered DWG in 48h', 'Fixed Price Quotes', 'Strict Layer Control'].map((t) => (
+                  <span key={t} className="flex items-center gap-2">
+                    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-green" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 12 L10 17 L19 7" />
+                    </svg>
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* image viewport */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="relative"
-          >
-            <div className="glass-card relative overflow-hidden rounded-3xl p-3">
-              <img 
-                src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80" 
-                alt="Professional reviewing drafting plans"
-                className="w-full h-[400px] object-cover rounded-2xl"
-              />
+          <div className="relative w-[75%] max-w-[280px] sm:max-w-[340px] aspect-square sm:aspect-[4/5] mx-auto lg:mr-0 lg:ml-auto overflow-hidden border-2 border-navy group self-center">
+            <img 
+              ref={imageRef}
+              src="/projects/profilepicsamihamakesmaller.png" 
+              alt="Samiha - Professional Consulting"
+              className="w-full h-full object-cover object-bottom grayscale group-hover:grayscale-0 transition-all duration-1000 block"
+            />
+            {/* Technical tag to make it feel intentional */}
+            <div className="absolute top-0 right-0 bg-navy text-white font-mono text-[10px] font-bold px-3 py-1 uppercase tracking-widest">
+              ID:SC-01
             </div>
-          </motion.div>
+            <div className="absolute bottom-0 left-0 bg-green text-navy font-mono text-[10px] font-bold px-3 py-1 uppercase tracking-widest border-t-2 border-r-2 border-navy">
+              DRAFTER
+            </div>
+          </div>
         </div>
 
         {/* hook strip */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="mt-16 grid gap-px overflow-hidden rounded-2xl bg-white shadow-soft sm:grid-cols-3"
-        >
+        <div className="mt-24 grid gap-0 border-2 border-navy bg-white sm:grid-cols-3 rounded-sm transition-all duration-200 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0_0_#0A66C2]">
           {[
             { stat: '1mm', label: 'Coordinate accuracy' },
             { stat: '48h', label: 'Typical DWG turnaround' },
-            { stat: '100%', label: 'Layered to industry standard' },
+            { stat: '100%', label: 'Layered to BS 1192' },
           ].map((s) => (
-            <div key={s.label} className="bg-transparent px-6 py-6 text-center sm:text-left border-b sm:border-b-0 sm:border-r border-charcoal/10 last:border-0">
-              <div className="text-3xl font-extrabold text-navy">{s.stat}</div>
-              <div className="mt-1 text-sm text-charcoal/70">{s.label}</div>
+            <div key={s.label} className="px-8 py-10 text-center sm:text-left border-b-2 sm:border-b-0 sm:border-r-2 border-navy last:border-0 relative overflow-hidden group hover:bg-navy transition-colors duration-200">
+              <div className="font-mono text-5xl font-bold text-navy group-hover:text-green transition-colors duration-200">{s.stat}</div>
+              <div className="mt-3 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-charcoal group-hover:text-white transition-colors duration-200">{s.label}</div>
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   )

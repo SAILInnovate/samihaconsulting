@@ -1,31 +1,47 @@
-import { motion } from 'framer-motion'
+import { useRef } from 'react'
+import { gsap } from 'gsap'
+import { useGSAP } from '@gsap/react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function CTABand() {
+  const ctaRef = useRef(null)
+
+  useGSAP(() => {
+    gsap.fromTo(ctaRef.current,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1, y: 0, duration: 0.8, ease: 'power2.out',
+        scrollTrigger: {
+          trigger: ctaRef.current,
+          start: 'top 85%',
+        }
+      }
+    )
+  }, { scope: ctaRef })
+
   return (
-    <section className="relative py-16">
-      <div className="mx-auto max-w-5xl px-5 sm:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="relative overflow-hidden rounded-3xl bg-sage shadow-card p-10 text-center sm:p-14"
+    <section className="relative py-24 bg-white border-t-2 border-navy">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <div
+          ref={ctaRef}
+          className="relative overflow-hidden bg-navy p-12 text-center sm:p-20 border-2 border-navy"
         >
           <div className="relative">
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-navy/80">
-              The reframe
+            <p className="font-mono text-[13px] font-bold uppercase tracking-[0.3em] text-green">
+              // THE REFRAME
             </p>
-            <p className="mx-auto mt-5 max-w-2xl text-balance text-2xl font-semibold leading-snug text-navy sm:text-3xl">
-              Your senior staff are wasting your money — let them design.
-              <br />
-              <span className="text-white">I will handle the redrafting.</span>
+            <p className="mx-auto mt-6 max-w-3xl text-balance font-sans text-4xl font-extrabold leading-[1.1] text-white sm:text-6xl uppercase">
+              YOUR SENIOR STAFF ARE WASTING MONEY.<br />
+              <span className="text-white/60">LET THEM DESIGN.</span>
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <a href="#contact" className="btn-primary !bg-navy hover:!bg-navy-dark">Start with one drawing</a>
-              <a href="#pricing" className="btn-ghost !border-navy !text-navy hover:!bg-navy/5">See pricing</a>
+            <div className="mt-12 flex flex-col sm:flex-row justify-center gap-6">
+              <a href="#contact" className="btn-primary !bg-white !text-navy hover:!bg-white/90">START WITH ONE DRAWING</a>
+              <a href="#pricing" className="btn-ghost !border-white !text-white hover:!bg-white hover:!text-navy">SEE PRICING</a>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

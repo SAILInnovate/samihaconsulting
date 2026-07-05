@@ -1,6 +1,10 @@
 import { useRef, useState } from 'react'
-import { motion } from 'framer-motion'
-import { submitEnquiry, isSupabaseConfigured } from '../lib/supabase.js'
+import { gsap } from 'gsap'
+import { useGSAP } from '@gsap/react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { submitEnquiry } from '../lib/supabase.js'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const projectTypes = [
   'PDF / sketch to DWG',
@@ -12,122 +16,187 @@ const projectTypes = [
 ]
 
 export default function Contact() {
-  const [status, setStatus] = useState('idle') // idle | submitting | success | error
-  const [error, setError] = useState('')
-  const [fileName, setFileName] = useState('')
+  const [files, setFiles] = useState([])
   const [dragOver, setDragOver] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState('')
   const fileRef = useRef(null)
+  
+  const sectionRef = useRef(null)
+  const copyRef = useRef(null)
+  const formRef = useRef(null)
 
-  async function handleSubmit(e) {
+  useGSAP(() => {
+    gsap.fromTo(copyRef.current,
+      { opacity: 0, x: -30 },
+      {
+        opacity: 1, x: 0, duration: 0.8, ease: 'power2.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+        }
+      }
+    )
+    gsap.fromTo(formRef.current,
+      { opacity: 0, x: 30 },
+      {
+        opacity: 1, x: 0, duration: 0.8, delay: 0.2, ease: 'power2.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+        }
+      }
+    )
+  }, { scope: sectionRef })
+
+  const handleFiles = (incomingFiles) => {
+    if (!incomingFiles || incomingFiles.length === 0) return
+    let newFiles = []
+    let hasError = false
+    Array.from(incomingFiles).forEach(f => {
+      if (f.size > 25 * 1024 * 1024) {
+        setError('One or more files are too large. Maximum size is 25MB per file.')
+        hasError = true
+        return
+      }
+      const ext = f.name.split('.').pop().toLowerCase()
+      const allowed = ['pdf', 'dwg', 'png', 'jpg', 'jpeg', 'tif', 'tiff']
+      if (!allowed.includes(ext)) {
+        setError(`Invalid file type for ${f.name}. Please upload PDF, DWG, PNG, or JPG.`)
+        hasError = true
+        return
+      }
+      // Check if file already exists
+      if (!files.some(existing => existing.name === f.name)) {
+        newFiles.push(f)
+      }
+    })
+    
+    if (!hasError) setError('')
+    setFiles(prev => [...prev, ...newFiles])
+    if (fileRef.current) fileRef.current.value = ''
+  }
+
+  const removeFile = (e, index) => {
+    e.stopPropagation()
+    setFiles(prev => prev.filter((_, i) => i !== index))
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setStatus('submitting')
+    setLoading(true)
     setError('')
+    
+    const formData = new FormData(e.target)
+    const data = {
+      name: formData.get('name')?.trim(),
+      email: formData.get('email')?.trim(),
+      company: formData.get('company')?.trim(),
+      projectType: formData.get('projectType')?.trim(),
+      message: formData.get('message')?.trim(),
+      files: files
+    }
+
     try {
-      const fd = new FormData(e.currentTarget)
-      await submitEnquiry({
-        name: fd.get('name'),
-        email: fd.get('email'),
-        company: fd.get('company'),
-        projectType: fd.get('projectType'),
-        message: fd.get('message'),
-        file: fd.get('file'),
-      })
-      setStatus('success')
-      e.target.reset()
-      setFileName('')
+      await submitEnquiry(data)
+      setSuccess(true)
     } catch (err) {
       console.error(err)
-      setError(err.message || 'Something went wrong. Please email directly.')
-      setStatus('error')
+      setError('Connection failed. Please try again or email me directly.')
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
-    <section id="contact" className="relative py-24 bg-beige/30">
+    <section id="contact" ref={sectionRef} className="relative py-24 bg-beige border-t-2 border-navy">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+        <div className="grid items-start gap-12 lg:grid-cols-2">
           {/* copy */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="section-label">Client portal</span>
-            <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-navy sm:text-4xl">
-              Send me your first overflow task
+          <div ref={copyRef}>
+            <span className="section-label bg-white text-navy font-mono border-navy border-2">// CLIENT PORTAL</span>
+            <h2 className="mt-6 text-balance font-sans text-4xl font-extrabold tracking-tight text-navy sm:text-6xl uppercase">
+              SEND YOUR FIRST OVERFLOW TASK
             </h2>
-            <p className="mt-4 max-w-md text-balance text-base leading-relaxed text-charcoal/70">
+            <p className="mt-6 max-w-md text-balance text-lg leading-relaxed text-charcoal font-medium">
               Drop your messy PDF or hand sketch below. I will reply within one working
               day with a fixed project price and a start date — no obligation until you
               approve the quote.
             </p>
 
-            <div className="mt-8 space-y-4">
+            <div className="mt-12 space-y-0 border-t-2 border-navy">
               {[
                 { label: 'Response time', value: 'Within 1 working day' },
                 { label: 'Payment terms', value: '50% deposit · 50% on completion' },
                 { label: 'Revisions', value: 'Included until you are satisfied' },
                 { label: 'Delivery format', value: '.dwg + .pdf, layered to standard' },
               ].map((row) => (
-                <div key={row.label} className="flex items-center justify-between border-b border-charcoal/10 pb-3 text-sm">
-                  <span className="text-charcoal/60">{row.label}</span>
-                  <span className="font-medium text-navy">{row.value}</span>
+                <div key={row.label} className="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-charcoal/10 py-5 text-sm">
+                  <span className="font-mono text-charcoal/60 uppercase font-bold text-[11px] tracking-widest">{row.label}</span>
+                  <span className="font-sans text-navy font-bold">{row.value}</span>
                 </div>
               ))}
             </div>
 
-            <div className="mt-8 flex items-center gap-3 text-sm text-charcoal/60">
-              <svg viewBox="0 0 24 24" className="h-4 w-4 text-green" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="4" y="5" width="16" height="14" rx="2" />
-                <path d="M4 7 L12 13 L20 7" />
-              </svg>
-              hello@samihaconsulting.com
+            <div className="mt-12 space-y-4 font-mono font-bold text-xs uppercase tracking-widest">
+              <div className="flex items-center gap-4 text-navy">
+                <svg viewBox="0 0 24 24" className="h-5 w-5 text-green" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="square">
+                  <rect x="4" y="5" width="16" height="14" />
+                  <path d="M4 7 L12 13 L20 7" />
+                </svg>
+                <a href="mailto:samiha@samihaconsulting.com" className="hover:text-green transition-colors">samiha@samihaconsulting.com</a>
+              </div>
+              <div className="flex items-center gap-4 text-navy">
+                <svg viewBox="0 0 24 24" className="h-5 w-5 text-green" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="square">
+                  <path d="M16 8v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+                <a href="https://www.linkedin.com/in/samiha-ali-491618243/" target="_blank" rel="noopener noreferrer" className="hover:text-green transition-colors">Connect on LinkedIn</a>
+              </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* form */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="relative"
-          >
-            <div className="bg-white shadow-card rounded-3xl p-6 sm:p-8">
-              {status === 'success' ? (
-                <div className="grid place-items-center py-12 text-center">
-                  <div className="grid h-16 w-16 place-items-center rounded-full border border-sage/40 bg-sage/10">
-                    <svg viewBox="0 0 24 24" className="h-8 w-8 text-navy" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M5 12 L10 17 L19 7" />
+          <div ref={formRef} className="relative">
+            <div className="bg-white border-2 border-navy p-6 sm:p-12 min-h-[600px] flex flex-col justify-center">
+              {success ? (
+                <div className="text-center py-12">
+                  <div className="mx-auto h-20 w-20 border-2 border-navy bg-green text-navy grid place-items-center mb-8">
+                    <svg viewBox="0 0 24 24" className="h-10 w-10" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="square">
+                      <path d="M20 6L9 17l-5-5" />
                     </svg>
                   </div>
-                  <h3 className="mt-5 text-xl font-bold text-navy">Brief received.</h3>
-                  <p className="mt-2 max-w-sm text-sm text-charcoal/70">
-                    Your file is on its way. I will reply within one working day with a
-                    fixed quote and start date.
-                  </p>
-                  <button onClick={() => setStatus('idle')} className="btn-ghost mt-6">
-                    Send another
+                  <h3 className="font-sans text-3xl font-extrabold text-navy uppercase tracking-tight">BRIEF RECEIVED</h3>
+                  <p className="mt-4 text-charcoal font-medium text-lg">Your files have been uploaded securely. I will review them and send you a fixed quote within one working day.</p>
+                  <button onClick={() => { setSuccess(false); setFiles([]) }} className="mt-10 btn-ghost border-navy text-navy hover:bg-navy hover:text-white">
+                    Submit another task
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <Field label="Your name" name="name" required placeholder="Jane Architect" />
-                    <Field label="Email" name="email" type="email" required placeholder="jane@studio.com" />
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {error && (
+                    <div className="border-2 border-red-500 bg-red-50 text-red-700 p-4 font-mono text-sm font-bold uppercase tracking-wider">
+                      {error}
+                    </div>
+                  )}
+                  <div className="grid gap-6 sm:grid-cols-2">
+                    <Field label="Your name" name="name" required placeholder="Jane Architect" disabled={loading} />
+                    <Field label="Email" name="email" type="email" required placeholder="jane@studio.com" disabled={loading} />
                   </div>
-                  <Field label="Company" name="company" placeholder="Studio name (optional)" />
+                  <Field label="Company" name="company" placeholder="Studio name (optional)" disabled={loading} />
 
                   <div>
-                    <label className="mb-2 block text-xs font-medium uppercase tracking-wider text-charcoal/60">
+                    <label className="mb-2 block text-[11px] font-bold uppercase tracking-widest text-navy font-mono">
                       Project type
                     </label>
                     <select
                       name="projectType"
                       required
                       defaultValue=""
-                      className="w-full rounded-xl border border-charcoal/10 bg-transparent px-4 py-3 text-sm text-charcoal outline-none transition-colors focus:border-navy/50"
+                      disabled={loading}
+                      className="w-full rounded-none border-2 border-navy bg-white px-5 py-4 text-base font-bold text-navy outline-none transition-all duration-200 focus:border-green focus:-translate-y-1 focus:-translate-x-1 focus:shadow-[4px_4px_0_0_#0A66C2] disabled:opacity-50"
                     >
                       <option value="" disabled>Select a service…</option>
                       {projectTypes.map((p) => (
@@ -137,99 +206,81 @@ export default function Contact() {
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-xs font-medium uppercase tracking-wider text-charcoal/60">
+                    <label className="mb-2 block text-[11px] font-bold uppercase tracking-widest text-navy font-mono">
                       Brief description
                     </label>
                     <textarea
                       name="message"
-                      rows={3}
+                      rows={4}
                       placeholder="A batch of old hand-drawn floor plans needing digitising into layered DWG…"
-                      className="w-full resize-none rounded-xl border border-charcoal/10 bg-transparent px-4 py-3 text-sm text-charcoal outline-none transition-colors placeholder:text-charcoal/30 focus:border-navy/50"
+                      disabled={loading}
+                      className="w-full resize-none rounded-none border-2 border-navy bg-white px-5 py-4 text-base font-bold text-navy outline-none transition-all duration-200 placeholder:text-navy/40 focus:border-green focus:-translate-y-1 focus:-translate-x-1 focus:shadow-[4px_4px_0_0_#0A66C2] disabled:opacity-50"
                     />
                   </div>
 
                   {/* drag & drop upload */}
                   <div
-                    onDragOver={(e) => { e.preventDefault(); setDragOver(true) }}
+                    onDragOver={(e) => { e.preventDefault(); if (!loading) setDragOver(true) }}
                     onDragLeave={() => setDragOver(false)}
                     onDrop={(e) => {
                       e.preventDefault()
+                      if (loading) return
                       setDragOver(false)
-                      const f = e.dataTransfer.files?.[0]
-                      if (f) {
-                        setFileName(f.name)
-                        if (fileRef.current) {
-                          const dt = new DataTransfer()
-                          dt.items.add(f)
-                          fileRef.current.files = dt.files
-                        }
-                      }
+                      handleFiles(e.dataTransfer.files)
                     }}
-                    onClick={() => fileRef.current?.click()}
-                    className={`group cursor-pointer rounded-xl border border-dashed px-4 py-6 text-center transition-colors ${
+                    onClick={() => !loading && fileRef.current?.click()}
+                    className={`group cursor-pointer border-2 border-dashed px-4 py-12 text-center transition-all duration-200 ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0_0_#0A66C2] active:scale-[0.98]'} ${
                       dragOver
-                        ? 'border-navy/60 bg-navy/5'
-                        : 'border-charcoal/15 bg-transparent hover:border-navy/30 hover:bg-beige/30'
+                        ? 'border-green bg-green/10 shadow-[6px_6px_0_0_#0A66C2] -translate-y-1 -translate-x-1'
+                        : 'border-navy bg-white hover:border-green hover:bg-green/5'
                     }`}
                   >
-                    <input ref={fileRef} type="file" name="file" className="hidden" accept=".pdf,.dwg,.png,.jpg,.jpeg,.tif,.tiff" onChange={(e) => setFileName(e.target.files?.[0]?.name || '')} />
-                    <svg viewBox="0 0 24 24" className="mx-auto h-7 w-7 text-navy/70 transition-transform group-hover:-translate-y-0.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                    <input ref={fileRef} type="file" name="file" multiple className="hidden" accept=".pdf,.dwg,.png,.jpg,.jpeg,.tif,.tiff" onChange={(e) => handleFiles(e.target.files)} disabled={loading} />
+                    <svg viewBox="0 0 24 24" className={`mx-auto h-8 w-8 text-navy transition-transform ${!loading && 'group-hover:-translate-y-1 group-hover:text-green'}`} fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square">
                       <path d="M12 16 L12 4 M7 9 L12 4 L17 9" />
                       <path d="M5 20 L19 20" />
                     </svg>
-                    <p className="mt-3 text-sm text-charcoal/70">
-                      {fileName ? (
-                        <span className="font-medium text-navy">{fileName}</span>
-                      ) : (
-                        <>Drop your PDF or sketch here, or <span className="text-navy">browse</span></>
-                      )}
+                    <p className="mt-5 text-sm text-navy font-bold uppercase tracking-wider font-mono">
+                      Drop your PDFs or sketches here, or <span className="text-green">browse</span>
                     </p>
-                    <p className="mt-1 text-[11px] text-charcoal/40">PDF, DWG, PNG, JPG, TIFF — up to 25MB</p>
+                    <p className="mt-2 text-[11px] uppercase tracking-widest text-charcoal/60 font-mono">PDF, DWG, PNG, JPG — up to 25MB each</p>
                   </div>
-
-                  {error && (
-                    <p className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-700">
-                      {error}
-                    </p>
+                  
+                  {files.length > 0 && (
+                    <div className="flex flex-wrap gap-3">
+                      {files.map((f, i) => (
+                        <div key={i} className="flex items-center gap-2 border-2 border-navy bg-white px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-widest text-navy transition-all hover:bg-red-50 hover:border-red-500 hover:text-red-700">
+                          <span className="truncate max-w-[200px]">{f.name}</span>
+                          <button type="button" onClick={(e) => removeFile(e, i)} className="grid h-4 w-4 place-items-center rounded-sm transition-colors" aria-label="Remove file">
+                            <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="square"><path d="M6 6 L18 18 M18 6 L6 18" /></svg>
+                          </button>
+                        </div>
+                      ))}
+                    </div>
                   )}
 
-                  <button type="submit" disabled={status === 'submitting'} className="btn-primary w-full justify-center disabled:opacity-60">
-                    {status === 'submitting' ? (
-                      <>
-                        <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                          <path d="M12 3 a9 9 0 1 0 9 9" />
-                        </svg>
-                        Sending…
-                      </>
-                    ) : (
-                      <>
-                        Send brief & request quote
-                        <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M5 12 L19 12 M13 6 L19 12 L13 18" />
-                        </svg>
-                      </>
+                  <button type="submit" disabled={loading} className="btn-primary w-full justify-center text-[14px] disabled:opacity-50 disabled:cursor-not-allowed transition-all">
+                    {loading ? 'UPLOADING FILES & SENDING...' : 'SEND BRIEF & REQUEST QUOTE'}
+                    {!loading && (
+                      <svg viewBox="0 0 24 24" className="ml-2 h-5 w-5" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="square">
+                        <path d="M5 12 L19 12 M13 6 L19 12 L13 18" />
+                      </svg>
                     )}
                   </button>
-
-                  {!isSupabaseConfigured && (
-                    <p className="text-center text-[11px] text-charcoal/40">
-                      Demo mode — add VITE_SUPABASE_URL &amp; VITE_SUPABASE_ANON_KEY to enable live submissions.
-                    </p>
-                  )}
                 </form>
               )}
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
   )
 }
 
-function Field({ label, name, type = 'text', required, placeholder }) {
+function Field({ label, name, type = 'text', required, placeholder, disabled }) {
   return (
     <div>
-      <label className="mb-2 block text-xs font-medium uppercase tracking-wider text-charcoal/60">
+      <label className="mb-2 block text-[11px] font-bold uppercase tracking-widest text-navy font-mono">
         {label} {required && <span className="text-green">*</span>}
       </label>
       <input
@@ -237,7 +288,8 @@ function Field({ label, name, type = 'text', required, placeholder }) {
         name={name}
         required={required}
         placeholder={placeholder}
-        className="w-full rounded-xl border border-charcoal/10 bg-transparent px-4 py-3 text-sm text-charcoal outline-none transition-colors placeholder:text-charcoal/30 focus:border-navy/50"
+        disabled={disabled}
+        className="w-full rounded-none border-2 border-navy bg-white px-5 py-4 text-base font-bold text-navy outline-none transition-all duration-200 placeholder:text-navy/40 focus:border-green focus:-translate-y-1 focus:-translate-x-1 focus:shadow-[4px_4px_0_0_#0A66C2] disabled:opacity-50"
       />
     </div>
   )

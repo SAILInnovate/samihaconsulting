@@ -5,35 +5,48 @@ export default {
     extend: {
       colors: {
         navy: {
-          DEFAULT: '#1F3A5F',
-          dark: '#152943',
-          light: '#2A4E7D',
+          DEFAULT: '#000000', // True Black
+          dark: '#000000',
+          light: '#1A1A1A', // Graphite
         },
         beige: {
-          DEFAULT: '#F5F1E6',
-          dark: '#E8E2D0',
+          DEFAULT: '#FFFFFF', // Stark White
+          dark: '#F4F5F6', // Engineered Slate
         },
         sage: {
-          DEFAULT: '#A8C3A0',
-          dark: '#8EAA85',
+          DEFAULT: '#E2E8F0', // Slate Gridline
+          dark: '#CBD5E1',
         },
         green: {
-          DEFAULT: '#6B8E23',
-          dark: '#556B2F',
+          DEFAULT: '#0A66C2', // Blueprint Blue / technical accent
+          dark: '#08539C',
         },
         charcoal: {
-          DEFAULT: '#3B3B3B',
-          dark: '#222222',
-          light: '#555555',
+          DEFAULT: '#050505', // Almost Black
+          dark: '#000000',
+          light: '#64748B', // Slate grey for secondary text
         },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Menlo', 'monospace'],
+        serif: ['Inter', 'system-ui', '-apple-system', 'sans-serif'], // Replaced serif with sans for strict geometric look
+        mono: ['"JetBrains Mono"', 'Menlo', 'monospace'],
       },
       boxShadow: {
-        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
-        'card': '0 8px 30px rgba(0,0,0,0.08)',
+        'soft': 'none', // Removed for brutalist look
+        'card': 'none',
+      },
+      backgroundImage: {
+        'grid-pattern': "url(\"data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0L0 0 0 20' fill='none' stroke='%23e2e8f0' stroke-width='1' /%3E%3C/svg%3E\")",
+      },
+      keyframes: {
+        'pan-grid': {
+          '0%': { backgroundPosition: '0 0' },
+          '100%': { backgroundPosition: '20px 20px' },
+        }
+      },
+      animation: {
+        'pan-grid': 'pan-grid 3s linear infinite',
       }
     },
   },

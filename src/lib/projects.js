@@ -21,9 +21,9 @@ export const projects = [
     summary:
       'A fully layered residential kitchen unit plan, drawn to scale with appliance clearances, worktop runs, and ergonomic traffic zones.',
     detail:
-      'A scaled kitchen unit plan drawn across standard AIA layers — fixtures, cabinetry, appliances, and dimensions isolated for clean handoff. Appliance clearances and work triangle distances are dimensioned to ensure ergonomic compliance and that no clash occurs between trades on site.',
+      'A scaled kitchen unit plan drawn across UK industry-standard layers — fixtures, cabinetry, appliances, and dimensions isolated for clean handoff. Appliance clearances and work triangle distances are dimensioned to ensure ergonomic compliance and that no clash occurs between trades on site.',
     value: 'Showcases clear communication between teams working on building layouts.',
-    specs: ['Scaled 1:50', 'AIA Layered', 'Appliance Clearances', 'Dimensioned'],
+    specs: ['Scaled 1:50', 'BS 1192 Layered', 'Appliance Clearances', 'Dimensioned'],
   },
   {
     id: 'converge',

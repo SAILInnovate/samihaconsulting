@@ -1,5 +1,10 @@
-import { motion } from 'framer-motion'
+import { useRef } from 'react'
+import { gsap } from 'gsap'
+import { useGSAP } from '@gsap/react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { services, valueProps } from '../lib/projects.js'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const icons = {
   convert: (
@@ -20,67 +25,93 @@ const icons = {
 }
 
 export default function Services() {
+  const sectionRef = useRef(null)
+  const cardsRef = useRef([])
+  const propsRef = useRef([])
+
+  const addToCards = (el) => {
+    if (el && !cardsRef.current.includes(el)) cardsRef.current.push(el)
+  }
+  const addToProps = (el) => {
+    if (el && !propsRef.current.includes(el)) propsRef.current.push(el)
+  }
+
+  useGSAP(() => {
+    gsap.fromTo(cardsRef.current, 
+      { y: 40, opacity: 0 },
+      {
+        y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power3.out',
+        scrollTrigger: {
+          trigger: cardsRef.current[0],
+          start: 'top 85%',
+        }
+      }
+    )
+
+    gsap.fromTo(propsRef.current, 
+      { opacity: 0 },
+      {
+        opacity: 1, duration: 1, stagger: 0.15, ease: 'power2.out',
+        scrollTrigger: {
+          trigger: propsRef.current[0],
+          start: 'top 90%',
+        }
+      }
+    )
+  }, { scope: sectionRef })
+
   return (
-    <section id="services" className="relative py-24">
+    <section id="services" ref={sectionRef} className="relative py-24 bg-white">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
-          eyebrow="What I do"
-          title="Overflow drafting, taken off your desk"
-          subtitle="Your senior staff are expensive. When they spend hours converting PDFs or tweaking site plans, that is your margin walking out the door. Outsource the tedious work — keep the design talent on design."
+          eyebrow="Capabilities"
+          title="OVERFLOW DRAFTING, OFF YOUR DESK"
+          subtitle="When senior staff spend hours converting PDFs or tweaking site plans, that is margin walking out the door. Outsource the tedious drafting — keep the talent on design."
         />
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {services.map((s, i) => (
-            <motion.article
+            <article
               key={s.id}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-80px' }}
-              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="glass-card group relative flex flex-col p-7"
+              ref={addToCards}
+              className="group relative flex flex-col p-8 bg-white border-2 border-charcoal/10 transition-all duration-200 hover:border-navy hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0_0_#0A66C2] active:scale-[0.98] cursor-pointer"
             >
-              <div className="mb-5 grid h-12 w-12 place-items-center rounded-xl border border-sage/30 bg-sage/10">
-                <svg viewBox="0 0 24 24" className="h-6 w-6 text-navy" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+              <div className="mb-6 grid h-12 w-12 place-items-center bg-navy text-white">
+                <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="miter">
                   {icons[s.icon]}
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-navy">{s.title}</h3>
-              <p className="mt-3 flex-1 text-sm leading-relaxed text-charcoal/80">{s.description}</p>
-              <div className="mt-6 flex items-center justify-between border-t border-charcoal/5 pt-4">
-                <span className="text-xs font-medium uppercase tracking-wider text-green">
+              <h3 className="text-xl font-bold font-sans text-navy uppercase tracking-tight">{s.title}</h3>
+              <p className="mt-3 flex-1 text-sm leading-relaxed text-charcoal/80 font-medium">{s.description}</p>
+              <div className="mt-8 flex items-center justify-between border-t-2 border-charcoal/10 pt-4">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-navy font-mono">
                   {s.deliverable}
                 </span>
-                <svg viewBox="0 0 24 24" className="h-4 w-4 text-charcoal/40 transition-all group-hover:translate-x-1 group-hover:text-navy" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg viewBox="0 0 24 24" className="h-5 w-5 text-charcoal/30 transition-all group-hover:translate-x-2 group-hover:text-green" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12 L19 12 M13 6 L19 12 L13 18" />
                 </svg>
               </div>
-            </motion.article>
+            </article>
           ))}
         </div>
 
         {/* value props */}
-        <div className="mt-16">
-          <h3 className="text-center text-sm font-semibold uppercase tracking-[0.2em] text-charcoal/50">
-            Why it matters
-          </h3>
-          <div className="mt-8 grid gap-px overflow-hidden rounded-2xl bg-white shadow-soft md:grid-cols-3">
+        <div className="mt-24">
+          <div className="mt-8 grid gap-0 border-2 border-charcoal/10 bg-white md:grid-cols-3 transition-all duration-200 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0_0_#000] hover:border-navy group/props">
             {valueProps.map((v, i) => (
-              <motion.div
+              <div
                 key={v.title}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="bg-transparent p-7 border-b md:border-b-0 md:border-r border-charcoal/5 last:border-0"
+                ref={addToProps}
+                className="p-8 border-b-2 md:border-b-0 md:border-r-2 border-charcoal/10 group-hover/props:border-navy last:border-0 transition-colors duration-200 hover:bg-charcoal/5"
               >
-                <div className="flex items-center gap-2">
-                  <span className="grid h-7 w-7 place-items-center rounded-lg bg-sage/20 font-mono text-xs font-bold text-navy">
-                    0{i + 1}
+                <div className="flex flex-col gap-3">
+                  <span className="text-[12px] font-bold tracking-widest text-green font-mono uppercase">
+                    0{i + 1} //
                   </span>
-                  <h4 className="font-semibold text-navy">{v.title}</h4>
+                  <h4 className="font-sans font-bold text-navy uppercase text-lg">{v.title}</h4>
                 </div>
-                <p className="mt-4 text-sm leading-relaxed text-charcoal/80">{v.body}</p>
-              </motion.div>
+                <p className="mt-4 text-sm leading-relaxed text-charcoal/70 font-medium">{v.body}</p>
+              </div>
             ))}
           </div>
         </div>
@@ -93,11 +124,11 @@ export function SectionHeading({ eyebrow, title, subtitle, align = 'center' }) {
   return (
     <div className={align === 'center' ? 'mx-auto max-w-2xl text-center' : 'max-w-2xl'}>
       <span className="section-label">{eyebrow}</span>
-      <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-navy sm:text-4xl">
+      <h2 className="mt-6 text-balance font-sans text-3xl font-extrabold tracking-tight text-navy sm:text-4xl uppercase">
         {title}
       </h2>
       {subtitle && (
-        <p className="mt-4 text-balance text-base leading-relaxed text-charcoal/70">
+        <p className="mt-5 text-balance text-lg leading-relaxed text-charcoal/80 font-medium">
           {subtitle}
         </p>
       )}
