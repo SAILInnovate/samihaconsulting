@@ -31,7 +31,7 @@ export default function Contact() {
     gsap.fromTo(copyRef.current,
       { opacity: 0, x: -30 },
       {
-        opacity: 1, x: 0, duration: 0.8, ease: 'power2.out',
+        opacity: 1, x: 0, duration: 0.5, ease: 'power2.out',
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top 80%',
@@ -41,7 +41,7 @@ export default function Contact() {
     gsap.fromTo(formRef.current,
       { opacity: 0, x: 30 },
       {
-        opacity: 1, x: 0, duration: 0.8, delay: 0.2, ease: 'power2.out',
+        opacity: 1, x: 0, duration: 0.5, delay: 0.1, ease: 'power2.out',
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top 80%',

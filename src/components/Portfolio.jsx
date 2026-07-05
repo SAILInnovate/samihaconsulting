@@ -26,7 +26,7 @@ export default function Portfolio() {
     gsap.fromTo(gridRef.current.children,
       { y: 30, opacity: 0 },
       {
-        y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power2.out',
+        y: 0, opacity: 1, duration: 0.5, stagger: 0.05, ease: 'power2.out',
         scrollTrigger: {
           trigger: gridRef.current,
           start: 'top 85%',
@@ -40,7 +40,7 @@ export default function Portfolio() {
     if (gridRef.current) {
       gsap.fromTo(gridRef.current.children,
         { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.4, stagger: 0.05, ease: 'power2.out' }
+        { opacity: 1, y: 0, duration: 0.3, stagger: 0.05, ease: 'power2.out' }
       )
     }
   }, [filter])

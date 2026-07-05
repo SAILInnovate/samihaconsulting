@@ -20,13 +20,13 @@ export default function Hero() {
     gsap.fromTo(
       textRefs.current,
       { y: 60, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.2, stagger: 0.1, ease: 'power3.out', delay: 0.1 }
+      { y: 0, opacity: 1, duration: 0.6, stagger: 0.05, ease: 'power3.out', delay: 0.05 }
     )
 
     gsap.fromTo(
       imageRef.current,
       { scale: 1.15, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 1.5, ease: 'power3.out', delay: 0.3 }
+      { scale: 1, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.1 }
     )
   }, { scope: container })
 

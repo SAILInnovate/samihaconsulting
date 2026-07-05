@@ -40,7 +40,7 @@ export default function Services() {
     gsap.fromTo(cardsRef.current, 
       { y: 40, opacity: 0 },
       {
-        y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power3.out',
+        y: 0, opacity: 1, duration: 0.5, stagger: 0.05, ease: 'power3.out',
         scrollTrigger: {
           trigger: cardsRef.current[0],
           start: 'top 85%',
@@ -51,7 +51,7 @@ export default function Services() {
     gsap.fromTo(propsRef.current, 
       { opacity: 0 },
       {
-        opacity: 1, duration: 1, stagger: 0.15, ease: 'power2.out',
+        opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power2.out',
         scrollTrigger: {
           trigger: propsRef.current[0],
           start: 'top 90%',
