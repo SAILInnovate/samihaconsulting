@@ -38,15 +38,6 @@ export default {
       },
       backgroundImage: {
         'grid-pattern': "url(\"data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0L0 0 0 20' fill='none' stroke='%23e2e8f0' stroke-width='1' /%3E%3C/svg%3E\")",
-      },
-      keyframes: {
-        'pan-grid': {
-          '0%': { backgroundPosition: '0 0' },
-          '100%': { backgroundPosition: '20px 20px' },
-        }
-      },
-      animation: {
-        'pan-grid': 'pan-grid 3s linear infinite',
       }
     },
   },

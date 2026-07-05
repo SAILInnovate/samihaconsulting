@@ -80,7 +80,7 @@ export default function Portfolio() {
               className="group relative flex flex-col text-left border-2 border-navy bg-white transition-all duration-200 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[8px_8px_0_0_#000] active:scale-[0.98]"
             >
               <div className="relative overflow-hidden h-[300px] w-full bg-charcoal/5 border-b-2 border-navy">
-                <img src={p.image} alt={p.title} className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105" />
+                <img src={p.image} alt={p.title} loading="lazy" className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105" />
               </div>
 
               <div className="p-6 sm:p-8">
@@ -133,7 +133,7 @@ export default function Portfolio() {
             </button>
 
             <div className="w-full md:w-[55%] h-64 md:h-[600px] bg-charcoal/5 border-b-2 md:border-b-0 md:border-r-2 border-navy">
-              <img src={active.image} alt={active.title} className="w-full h-full object-cover" />
+              <img src={active.image} alt={active.title} loading="lazy" className="w-full h-full object-cover" />
             </div>
 
             <div className="w-full md:w-[45%] p-8 md:p-12 flex flex-col justify-center bg-white">

@@ -31,8 +31,9 @@ export default function Hero() {
   }, { scope: container })
 
   return (
-    <section id="top" ref={container} className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 bg-grid-pattern animate-pan-grid">
-      <div className="absolute inset-0 bg-white/80" /> {/* Grid fade */}
+    <section id="top" ref={container} className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 overflow-hidden">
+      <div className="hero-grid" />
+      <div className="absolute inset-0 bg-white/80 z-0" /> {/* Grid fade */}
       <div className="mx-auto max-w-7xl px-5 sm:px-8 relative z-10">
         <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
           {/* copy */}
@@ -82,6 +83,7 @@ export default function Hero() {
               ref={imageRef}
               src="/projects/profilepicsamihamakesmaller.png" 
               alt="Samiha - Professional Consulting"
+              fetchPriority="high"
               className="w-full h-full object-cover object-bottom grayscale group-hover:grayscale-0 transition-all duration-1000 block"
             />
             {/* Technical tag to make it feel intentional */}

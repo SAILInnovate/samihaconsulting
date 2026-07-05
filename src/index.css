@@ -94,6 +94,20 @@
     background: rgba(0, 0, 0, 0.1);
     height: 1px;
   }
+
+  .hero-grid {
+    position: absolute;
+    inset: -50px;
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0L0 0 0 20' fill='none' stroke='%23e2e8f0' stroke-width='1' /%3E%3C/svg%3E");
+    will-change: transform;
+    animation: pan-grid-transform 3s linear infinite;
+    z-index: 0;
+  }
+
+  @keyframes pan-grid-transform {
+    0% { transform: translate3d(0px, 0px, 0); }
+    100% { transform: translate3d(20px, 20px, 0); }
+  }
 }
 
 @layer utilities {
