@@ -112,11 +112,7 @@ export default function Admin() {
       <div className="min-h-screen grid place-items-center bg-beige px-5 py-20">
         <div className="w-full max-w-md bg-white border-2 border-navy p-8 sm:p-12 shadow-[8px_8px_0_0_#0A66C2]">
           <div className="mb-8">
-            <span className="section-label bg-white">
-              <span className="h-2 w-2 rounded-none bg-green" />
-              SYSTEM ACCESS
-            </span>
-            <h1 className="mt-4 font-sans text-3xl font-extrabold text-navy uppercase">Admin Portal</h1>
+            <h1 className="font-sans text-3xl font-extrabold text-navy uppercase">Admin Portal</h1>
           </div>
           
           <form onSubmit={handleLogin} className="flex flex-col gap-6">

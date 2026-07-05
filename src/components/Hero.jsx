@@ -37,15 +37,6 @@ export default function Hero() {
         <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
           {/* copy */}
           <div>
-            <div className="overflow-hidden">
-              <div ref={addToRefs}>
-                <span className="section-label bg-white">
-                  <span className="h-2 w-2 rounded-none bg-green" />
-                  PRECISION DRAFTING // MANCHESTER UK
-                </span>
-              </div>
-            </div>
-
             <div className="mt-8 overflow-hidden pb-2">
               <h1 ref={addToRefs} className="text-balance font-sans text-5xl font-extrabold leading-[1.05] tracking-tight text-navy sm:text-6xl lg:text-7xl uppercase">
                 STOP REDRAFTING.<br />
