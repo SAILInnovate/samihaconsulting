@@ -40,32 +40,32 @@ export default function Hero() {
           <div>
             <div className="mt-8 overflow-hidden pb-2">
               <h1 ref={addToRefs} className="text-balance font-sans text-5xl font-extrabold leading-[1.05] tracking-tight text-navy sm:text-6xl lg:text-7xl uppercase">
-                STOP REDRAFTING.<br />
-                <span className="text-navy/70">START DESIGNING.</span>
+                PROFESSIONAL CAD<br />
+                <span className="text-navy/70">REDRAWING SERVICES</span>
               </h1>
             </div>
 
             <div className="mt-8 overflow-hidden">
               <p ref={addToRefs} className="max-w-xl text-balance text-xl leading-relaxed text-charcoal font-medium">
-                I convert messy PDFs, hand sketches, and red-line markups into exact, BS 1192 compliant DWG files.
+                We transform hand sketches, scanned drawings, PDFs, and red-line markups into accurate, fully editable AutoCAD DWG files.
               </p>
             </div>
 
             <div className="mt-10 overflow-hidden">
               <div ref={addToRefs} className="flex flex-col sm:flex-row items-center gap-4">
                 <a href="#contact" className="btn-primary group w-full sm:w-auto">
-                  Upload project file
+                  Get a Quote
                   <svg viewBox="0 0 24 24" className="h-5 w-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M5 12 L19 12 M13 6 L19 12 L13 18" />
                   </svg>
                 </a>
-                <a href="#pricing" className="btn-ghost w-full sm:w-auto">View pricing</a>
+                <a href="#process" className="btn-ghost w-full sm:w-auto">Upload Your Drawing</a>
               </div>
             </div>
 
             <div className="mt-12 overflow-hidden">
               <div ref={addToRefs} className="flex flex-wrap gap-x-6 gap-y-3 font-mono text-[11px] tracking-widest text-charcoal/70 uppercase font-bold">
-                {['Layered DWG in 48h', 'Fixed Price Quotes', 'Strict Layer Control'].map((t) => (
+                {['Accurate Tracing', 'Clean Geometry', 'Editable DWG'].map((t) => (
                   <span key={t} className="flex items-center gap-2">
                     <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-green" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M5 12 L10 17 L19 7" />
@@ -99,9 +99,9 @@ export default function Hero() {
         {/* hook strip */}
         <div className="mt-24 grid gap-0 border-2 border-navy bg-white sm:grid-cols-3 rounded-sm transition-all duration-200 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0_0_#0A66C2]">
           {[
-            { stat: '1mm', label: 'Coordinate accuracy' },
-            { stat: '48h', label: 'Typical DWG turnaround' },
-            { stat: '100%', label: 'Layered to BS 1192' },
+            { stat: '100%', label: 'Editable Geometry' },
+            { stat: '48h', label: 'Typical Turnaround' },
+            { stat: '1:1', label: 'True Scale Accuracy' },
           ].map((s) => (
             <div key={s.label} className="px-8 py-10 text-center sm:text-left border-b-2 sm:border-b-0 sm:border-r-2 border-navy last:border-0 relative overflow-hidden group hover:bg-navy transition-colors duration-200">
               <div className="font-mono text-5xl font-bold text-navy group-hover:text-green transition-colors duration-200">{s.stat}</div>

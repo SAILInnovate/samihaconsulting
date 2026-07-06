@@ -49,9 +49,9 @@ export default function Portfolio() {
     <section id="portfolio" ref={sectionRef} className="relative py-24 bg-beige border-t-2 border-navy">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
-          eyebrow="Technical portfolio"
-          title="DRAWINGS THAT PREVENT ERRORS"
-          subtitle="Every sheet is built on exact coordinates, dimensional limits and clean layering. Hover to inspect — click to open the full sheet."
+          eyebrow="Before & After"
+          title="FROM MESSY SKETCH TO CLEAN DWG"
+          subtitle="See how we transform rough concepts and old PDFs into strict, layered CAD drawings."
         />
 
         {/* filters */}
@@ -132,8 +132,22 @@ export default function Portfolio() {
               </svg>
             </button>
 
-            <div className="w-full md:w-[55%] h-64 md:h-[600px] bg-charcoal/5 border-b-2 md:border-b-0 md:border-r-2 border-navy">
-              <img src={active.image} alt={active.title} loading="lazy" className="w-full h-full object-cover" />
+            <div className="w-full md:w-[55%] h-64 md:h-[600px] flex flex-row bg-charcoal/5 border-b-2 md:border-b-0 md:border-r-2 border-navy">
+              {/* Before image placeholder */}
+              <div className="flex-1 border-r-2 border-navy relative bg-charcoal/10 flex items-center justify-center overflow-hidden">
+                <span className="font-mono text-[10px] font-bold text-navy/40 uppercase tracking-widest absolute text-center px-4">[Before Image Pending]</span>
+                <div className="absolute top-4 left-4 bg-navy text-white font-mono text-[10px] font-bold px-2 py-1 uppercase tracking-widest z-10">
+                  BEFORE
+                </div>
+              </div>
+              
+              {/* After image */}
+              <div className="flex-1 relative overflow-hidden">
+                <img src={active.image} alt={active.title} loading="lazy" className="w-full h-full object-cover" />
+                <div className="absolute top-4 right-4 bg-green text-navy font-mono text-[10px] font-bold px-2 py-1 uppercase tracking-widest z-10">
+                  AFTER
+                </div>
+              </div>
             </div>
 
             <div className="w-full md:w-[45%] p-8 md:p-12 flex flex-col justify-center bg-white">

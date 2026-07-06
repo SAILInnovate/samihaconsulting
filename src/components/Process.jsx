@@ -9,23 +9,23 @@ gsap.registerPlugin(ScrollTrigger)
 const steps = [
   {
     n: '01',
-    title: 'SEND FILE',
-    body: 'Upload a hand sketch, scanned PDF, or marked-up old drawing. No need to tidy it — that is my job.',
+    title: 'UPLOAD YOUR DRAWING',
+    body: 'Hand sketch, PDF, Scan, Markup',
   },
   {
     n: '02',
-    title: 'SCOPE & QUOTE',
-    body: 'Within one working day you receive a fixed project price. 50% deposit secures your slot.',
+    title: 'WE REDRAW IN AUTOCAD',
+    body: 'Accurate tracing, Clean geometry, Editable DWG',
   },
   {
     n: '03',
-    title: 'DRAFTING',
-    body: 'Your drawing is built to scale with strict coordinates, dimensional limits and BS 1192 compliant layering.',
+    title: 'QUALITY CHECK',
+    body: 'Layers, Dimensions, Scale verification',
   },
   {
     n: '04',
-    title: 'DELIVERY',
-    body: 'A clean, fully layered .dwg lands in your inbox — typically within 48 hours. Revisions included.',
+    title: 'RECEIVE YOUR FILES',
+    body: 'DWG, PDF, DXF (if requested)',
   },
 ]
 
