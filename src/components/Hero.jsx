@@ -41,13 +41,13 @@ export default function Hero() {
             <div className="mt-8 overflow-hidden pb-2">
               <h1 ref={addToRefs} className="text-balance font-sans text-5xl font-extrabold leading-[1.05] tracking-tight text-navy sm:text-6xl lg:text-7xl uppercase">
                 PROFESSIONAL CAD<br />
-                <span className="text-navy/70">REDRAWING SERVICES</span>
+                <span className="text-navy/70">& FLOOR PLANS</span>
               </h1>
             </div>
 
             <div className="mt-8 overflow-hidden">
               <p ref={addToRefs} className="max-w-xl text-balance text-xl leading-relaxed text-charcoal font-medium">
-                We transform hand sketches, scanned drawings, PDFs, and red-line markups into accurate, fully editable AutoCAD DWG files.
+                Expertly scaled floor plans and architectural drawings for ground-up builds and planning permission. We transform sketches and PDFs into accurate, fully editable AutoCAD DWG files.
               </p>
             </div>
 

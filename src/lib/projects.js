@@ -1,16 +1,16 @@
 export const projects = [
   {
     id: 'floorplan',
-    title: 'Floor Plan Redrawing',
-    category: 'Hand Sketch to CAD',
+    title: 'Planning Permission Floor Plans',
+    category: 'Ground-Up Builds',
     discipline: 'architectural',
     image: '/projects/kitchen.png',
     summary:
-      'A messy hand-drawn residential floor plan converted into a clean, scaled, and fully editable AutoCAD drawing.',
+      'Professional floor plans scaled and detailed specifically for planning permission applications.',
     detail:
-      'We received a photographed hand sketch with rough room dimensions. It was traced and redrawn into a precise AutoCAD file with clean geometry, proper layering, and standardized architectural symbols.',
-    value: 'Ready for client presentation and further design development.',
-    specs: ['AutoCAD 2D', 'Clean Geometry', 'Standard Layers'],
+      'For clients building from the ground up, we convert initial ideas or rough sketches into precise, scaled floor plans required by local authorities. We ensure all necessary details are included for a smooth planning approval process.',
+    value: 'Streamlines the planning permission process and provides a solid foundation for your build.',
+    specs: ['Planning Applications', 'Scaled Drawings', 'Ground-Up Builds'],
   },
   {
     id: 'pdf-dwg',
@@ -52,6 +52,11 @@ export const services = [
     description: 'Send us a photo of your paper sketch and get back a professional, scaled DWG.',
   },
   {
+    id: 'planning',
+    title: 'Planning Permission Drawings',
+    description: 'Scaled, accurate floor plans tailored for ground-up builds and planning applications.',
+  },
+  {
     id: 'floor',
     title: 'Floor plan redrawing',
     description: 'Old paper floor plans digitized into modern CAD layouts for renovations or sales.',
@@ -65,10 +70,5 @@ export const services = [
     id: 'support',
     title: 'CAD drafting support',
     description: 'Overflow drafting assistance when your in-house team is at maximum capacity.',
-  },
-  {
-    id: 'asbuilt',
-    title: 'As-built drawing updates',
-    description: 'Updating the final CAD files to reflect the actual constructed site conditions.',
   },
 ]

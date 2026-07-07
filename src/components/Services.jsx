@@ -32,8 +32,8 @@ export default function Services() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
           eyebrow="Capabilities"
-          title="PROFESSIONAL CAD REDRAWING"
-          subtitle="Accurate, clean, fully editable AutoCAD drawings created from sketches, PDFs, and scanned plans. Stop wasting senior talent on tedious conversion."
+          title="PLANNING & CAD DRAFTING"
+          subtitle="Specialized in accurate, clean, and fully editable AutoCAD floor plans. Whether you're building from the ground up and need planning permission, or converting sketches and PDFs—we provide the scaled drawings you need to get approved."
         />
 
         <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
